@@ -59,85 +59,59 @@ public class MacroOP {
         }
     }
 
-    public void getMacro() {
+    public void findMacro() {
 
         int i = 0;
-        String strAux = new String();
+        String strAux1 = new String();
         String strAux2 = new String();
 
         for (i = 0; i < this.inputCode.size(); i++) {
 
-            strAux = this.inputCode.get(i);
-            boolean t = false;
-
-            if ("MCDEFN".equals(strAux)) {
+            strAux1 = this.inputCode.get(i);
+            if (strAux1.equals("MCDEFN")) {
                 i++;
-                strAux = this.inputCode.get(i);
-                System.out.println(strAux + "\n");
-                if (!"MCEND".equals(strAux)) {
+                strAux1 = this.inputCode.get(i);
+                System.out.println(strAux1 + "\n");
+                if (!"MCEND".equals(strAux1)) {
                     int j = 0;
-
-                    t = true;
-
-                    while (t) {
-                        if (strAux.charAt(j) == '\n' || strAux.charAt(j) == ' ') {
-                            t = false;
+                    while (true) {
+                        if (strAux1.charAt(j) == '\n' || strAux1.charAt(j) == ' ') {
+                            break;
                         }
-
-                        if (t) {
-                            this.mc[this.tamMacro].label += strAux.charAt(j);
-
-                        }
-
+                        this.mc[this.tamMacro].label += strAux1.charAt(j);
                         j++;
                     }
 
-                    t = true;
-
-                    while (t) {
-                        if (strAux.charAt(j) == '\n' || strAux.charAt(j) == ' ') {
-                            t = false;
-                        }
-                        if (t) {
-                            this.mc[this.tamMacro].nomeMacro += strAux.charAt(j);
-
-                        }
-
-                        j++;
-                    }
-
-                    while (strAux.length() > j) {
-
-                        if (strAux.charAt(j) == ' ') {
+                    while (strAux1.length() > j) {
+                        if (strAux1.charAt(j) == ' ') {
                             this.mc[this.tamMacro].Args.add(strAux2);
-                            strAux2 = "";
+                            //strAux2 = "";
                             this.mc[this.tamMacro].num++;
-
                         }
 
-                        if (strAux.charAt(j) != ' ') {
-                            strAux2 += strAux.charAt(j);
+                        if (strAux1.charAt(j) != ' ') {
+                            strAux2 += strAux1.charAt(j);
                         }
 
                         j++;
                     }
-
                     this.mc[this.tamMacro].Args.add(strAux2);
                     strAux2 = "";
                     this.mc[this.tamMacro].num++;
-
                 }
 
-                while (!"mcend".equals(strAux)) {
+                while (!strAux1.equals("MCEND")) {
 
                     i++;
-                    strAux = this.inputCode.get(i);
+                    strAux1 = this.inputCode.get(i);
 
-                    if ((!"mcend".equals(strAux))) {
-                        this.mc[this.tamMacro].tabelaMacros.add(strAux);
+                    if (!strAux1.equals("MCEND")) {
+                        this.mc[this.tamMacro].tabelaMacros.add(strAux1);
                     }
 
                 }
+                System.out.println("Nome da Macro: " + this.mc[this.tamMacro].label); // PRINT NOME DA LABEL PARA TESTE
+                System.out.println("Corpo da Macro: " + this.mc[this.tamMacro].tabelaMacros.toString());
 
                 this.tamMacro++;
 
@@ -156,12 +130,12 @@ public class MacroOP {
             System.out.println("Erro, arquivo nao encontrado");
 
         }
-        System.out.println("Codigo de entrada: ");
-        teste.printInputCode();
+        //System.out.println("Codigo de entrada: ");
+        //teste.printInputCode();
 
-        teste.getMacro();
+        teste.findMacro();
 
         //System.out.println("Codigo de saida: ");
-        teste.printOutputCode();
+        //teste.printOutputCode();
     }
 }
