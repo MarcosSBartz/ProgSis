@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 public class MacroOP {
 
-    public Macro mc[];
+    public Macro mac[];
     public int tamMacro;
     public ArrayList<String> inputCode;
     public ArrayList<String> outPutCode;
@@ -21,13 +21,13 @@ public class MacroOP {
 
         this.inputCode = new ArrayList();
         this.outPutCode = new ArrayList();
-        this.mc = new Macro[100];
+        this.mac = new Macro[100];
 
         int i;
 
         for (i = 0; i < 100; i++) {
 
-            this.mc[i] = new Macro();
+            this.mac[i] = new Macro();
 
         }
 
@@ -78,7 +78,7 @@ public class MacroOP {
                             j++;
                             break;
                         }
-                        this.mc[this.tamMacro].label += strAux1.charAt(j);
+                        this.mac[this.tamMacro].label += strAux1.charAt(j);
                         j++;
                     }
                     while (true) {
@@ -86,15 +86,15 @@ public class MacroOP {
                             j++;
                             break;
                         }
-                        this.mc[this.tamMacro].nomeMacro += strAux1.charAt(j);
+                        this.mac[this.tamMacro].nomeMacro += strAux1.charAt(j);
                         j++;
                     }
 
                     while (strAux1.length() > j) {
                         if (strAux1.charAt(j) == ' ') {
-                            this.mc[this.tamMacro].Args.add(strAux2);
+                            this.mac[this.tamMacro].Args.add(strAux2);
                             strAux2 = "";
-                            this.mc[this.tamMacro].num++;
+                            this.mac[this.tamMacro].num++;
                         }
 
                         if (strAux1.charAt(j) != ' ') {
@@ -103,9 +103,9 @@ public class MacroOP {
 
                         j++;
                     }
-                    this.mc[this.tamMacro].Args.add(strAux2);
+                    this.mac[this.tamMacro].Args.add(strAux2);
                     strAux2 = "";
-                    this.mc[this.tamMacro].num++;
+                    this.mac[this.tamMacro].num++;
                 }
 
                 while (!strAux1.equals("MCEND")) {
@@ -114,14 +114,14 @@ public class MacroOP {
                     strAux1 = this.inputCode.get(i);
 
                     if (!strAux1.equals("MCEND")) {
-                        this.mc[this.tamMacro].tabelaMacros.add(strAux1);
+                        this.mac[this.tamMacro].tabelaMacros.add(strAux1);
                     }
 
                 }
-                System.out.println("Nome da Label: " + this.mc[this.tamMacro].label);
-                System.out.println("Nome da Macro: " + this.mc[this.tamMacro].nomeMacro);
-                System.out.println("Argumentos: " + this.mc[this.tamMacro].Args);
-                System.out.println("Corpo da Macro: " + this.mc[this.tamMacro].tabelaMacros.toString());
+                System.out.println("Nome da Label: " + this.mac[this.tamMacro].label);
+                System.out.println("Nome da Macro: " + this.mac[this.tamMacro].nomeMacro);
+                System.out.println("Argumentos: " + this.mac[this.tamMacro].Args);
+                System.out.println("Corpo da Macro: " + this.mac[this.tamMacro].tabelaMacros.toString());
                 this.tamMacro++;
 
             }
@@ -136,6 +136,7 @@ public class MacroOP {
 
         for (int i = 0; i < this.inputCode.size(); i++) {
             strAux1 = this.inputCode.get(i);
+            // Se encontrar MCDEFN vai ate MCEND
             if (strAux1.equals("MCDEFN")) {
                 while (!strAux1.equals("MCEND") || i < this.inputCode.size()) {
                     i++;
