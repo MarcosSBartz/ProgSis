@@ -122,13 +122,27 @@ public class MacroOP {
                 System.out.println("Nome da Macro: " + this.mc[this.tamMacro].nomeMacro);
                 System.out.println("Argumentos: " + this.mc[this.tamMacro].Args);
                 System.out.println("Corpo da Macro: " + this.mc[this.tamMacro].tabelaMacros.toString());
-
                 this.tamMacro++;
 
             }
 
         }
 
+    }
+
+    public void expandMacro() {
+        String strAux1 = new String();
+        String strAux2 = new String();
+
+        for (int i = 0; i < this.inputCode.size(); i++) {
+            strAux1 = this.inputCode.get(i);
+            if (strAux1.equals("MCDEFN")) {
+                while (!strAux1.equals("MCEND") || i < this.inputCode.size()) {
+                    i++;
+                    strAux1 = this.inputCode.get(i);
+                }
+            }
+        }
     }
 
     public static void main(String[] args) {
