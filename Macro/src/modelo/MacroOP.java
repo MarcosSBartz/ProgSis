@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 public class MacroOP {
 
-    public Macro mc[];
+    public Macro mac[];
     public int tamMacro;
     public ArrayList<String> inputCode;
     public ArrayList<String> outPutCode;
@@ -21,13 +21,13 @@ public class MacroOP {
 
         this.inputCode = new ArrayList();
         this.outPutCode = new ArrayList();
-        this.mc = new Macro[100];
+        this.mac = new Macro[100];
 
         int i;
 
         for (i = 0; i < 100; i++) {
 
-            this.mc[i] = new Macro();
+            this.mac[i] = new Macro();
 
         }
 
@@ -64,6 +64,7 @@ public class MacroOP {
         int i = 0;
         String strAux1 = new String();
         String strAux2 = new String();
+        boolean bAux;
 
         for (i = 0; i < this.inputCode.size(); i++) {
 
@@ -71,22 +72,21 @@ public class MacroOP {
             if (strAux1.equals("MCDEFN")) {
                 i++;
                 strAux1 = this.inputCode.get(i);
-                System.out.println(strAux1 + "\n");
                 if (!"MCEND".equals(strAux1)) {
                     int j = 0;
                     while (true) {
                         if (strAux1.charAt(j) == '\n' || strAux1.charAt(j) == ' ') {
                             break;
                         }
-                        this.mc[this.tamMacro].label += strAux1.charAt(j);
+                        this.mac[this.tamMacro].label += strAux1.charAt(j);
                         j++;
                     }
-
+                    j++;
                     while (strAux1.length() > j) {
                         if (strAux1.charAt(j) == ' ') {
-                            this.mc[this.tamMacro].Args.add(strAux2);
-                            //strAux2 = "";
-                            this.mc[this.tamMacro].num++;
+                            this.mac[this.tamMacro].Args.add(strAux2);
+                            strAux2 = "";
+                            this.mac[this.tamMacro].num++;
                         }
 
                         if (strAux1.charAt(j) != ' ') {
@@ -95,9 +95,9 @@ public class MacroOP {
 
                         j++;
                     }
-                    this.mc[this.tamMacro].Args.add(strAux2);
+                    this.mac[this.tamMacro].Args.add(strAux2);
                     strAux2 = "";
-                    this.mc[this.tamMacro].num++;
+                    this.mac[this.tamMacro].num++;
                 }
 
                 while (!strAux1.equals("MCEND")) {
@@ -106,15 +106,38 @@ public class MacroOP {
                     strAux1 = this.inputCode.get(i);
 
                     if (!strAux1.equals("MCEND")) {
-                        this.mc[this.tamMacro].tabelaMacros.add(strAux1);
+                        this.mac[this.tamMacro].tabelaMacros.add(strAux1);
                     }
 
                 }
-                System.out.println("Nome da Macro: " + this.mc[this.tamMacro].label); // PRINT NOME DA LABEL PARA TESTE
-                System.out.println("Corpo da Macro: " + this.mc[this.tamMacro].tabelaMacros.toString());
-
+                System.out.println("Label da Macro: " + this.mac[this.tamMacro].label);
+                System.out.println("Args" + this.mac[this.tamMacro].Args);
+                System.out.println("Corpo da Macro: " + this.mac[this.tamMacro].tabelaMacros.toString());
                 this.tamMacro++;
 
+            }
+
+        }
+
+    }
+
+    public void expandMacro() {
+        String strAux1 = new String();
+        String strAux2 = new String();
+
+        for (int i = 0; i < this.inputCode.size(); i++) {
+            strAux1 = this.inputCode.get(i);
+            if (strAux1.equals("MCDEFN")) {
+                while (!strAux1.equals("MCEND") || i < this.inputCode.size()) {
+                    i++;
+                    strAux1 = this.inputCode.get(i);
+                }
+            } else {
+                for (int p = 0; p < this.tamMacro; p++) {
+                    if (strAux1.equals(this.mac[p])) {
+
+                    }
+                }
             }
 
         }
@@ -126,15 +149,15 @@ public class MacroOP {
         MacroOP teste = new MacroOP();
         try {
             teste.read("CodigoEntrada.txt");
+            teste.findMacro();
+
         } catch (FileNotFoundException e) {
             System.out.println("Erro, arquivo nao encontrado");
 
         }
+
         //System.out.println("Codigo de entrada: ");
         //teste.printInputCode();
-
-        teste.findMacro();
-
         //System.out.println("Codigo de saida: ");
         //teste.printOutputCode();
     }
