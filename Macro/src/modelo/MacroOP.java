@@ -62,76 +62,6 @@ public class MacroOP {
         }
     }
 
-    public void findMacro() {
-
-        int i = 0;
-        String strAux1 = new String();
-        String strAux2 = new String();
-
-        for (i = 0; i < this.inputCode.size(); i++) {
-
-            strAux1 = this.inputCode.get(i);
-            if (strAux1.equals("MCDEFN")) {
-                i++;
-                strAux1 = this.inputCode.get(i);
-                if (!"MCEND".equals(strAux1)) {
-                    int j = 0;
-                    while (true) {
-                        if (strAux1.charAt(j) == '\n' || strAux1.charAt(j) == ' ') {
-                            j++;
-                            break;
-                        }
-                        this.mac[this.tamMacro].label += strAux1.charAt(j);
-                        j++;
-                    }
-                    while (true) {
-                        if (strAux1.charAt(j) == '\n' || strAux1.charAt(j) == ' ') {
-                            j++;
-                            break;
-                        }
-                        this.mac[this.tamMacro].nomeMacro += strAux1.charAt(j);
-                        j++;
-                    }
-
-                    while (strAux1.length() > j) {
-                        if (strAux1.charAt(j) == ' ') {
-                            this.mac[this.tamMacro].Args.add(strAux2);
-                            strAux2 = "";
-                            this.mac[this.tamMacro].num++;
-                        }
-
-                        if (strAux1.charAt(j) != ' ') {
-                            strAux2 += strAux1.charAt(j);
-                        }
-
-                        j++;
-                    }
-                    this.mac[this.tamMacro].Args.add(strAux2);
-                    strAux2 = "";
-                    this.mac[this.tamMacro].num++;
-                }
-
-                while (!strAux1.equals("MCEND")) {
-
-                    i++;
-                    strAux1 = this.inputCode.get(i);
-
-                    if (!strAux1.equals("MCEND")) {
-                        this.mac[this.tamMacro].tabelaMacros.add(strAux1);
-                    }
-
-                }
-                System.out.println("Nome da Label: " + this.mac[this.tamMacro].label);
-                System.out.println("Nome da Macro: " + this.mac[this.tamMacro].nomeMacro);
-                System.out.println("Argumentos: " + this.mac[this.tamMacro].Args);
-                System.out.println("Corpo da Macro: " + this.mac[this.tamMacro].tabelaMacros.toString());
-                this.tamMacro++;
-
-            }
-
-        }
-
-    }
 
     public void expandMacro() {
         int i = 0;
@@ -405,8 +335,6 @@ public class MacroOP {
         }
         //System.out.println("Codigo de entrada: ");
         //teste.printInputCode();
-
-        teste.findMacro();
 
         //System.out.println("Codigo de saida: ");
         //teste.printOutputCode();
