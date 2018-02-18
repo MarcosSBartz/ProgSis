@@ -1,8 +1,8 @@
 MCDEFN
-L QUAD A
-LOAD(r8,0,A)
+l QUAD k
+LOAD(r8,0,k)
 MULT(r8,r8,r8)
-STORE(r15,r8)
+STORE(k,r8)
 MCEND
 AND(r1,r2,r3)
 OR(r4,r2,r3)

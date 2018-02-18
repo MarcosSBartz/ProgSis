@@ -237,7 +237,6 @@ public class MacroOP {
                             strAux = this.mac[p].tabelaMacros.get(k);
                             
                             strAux = strAux.replace(this.mac[p].label, label);
-                            System.out.println("test:" + strAux);
                             while(v < this.mac[p].num){
                                 strAux = strAux.replace(this.mac[p].Args.get(v), args.get(v));
                                 v++;
