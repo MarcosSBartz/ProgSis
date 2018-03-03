@@ -1,7 +1,0 @@
-AND(r1,r2,r3)
-OR(r4,r2,r3)
-LOAD(r8,0,r2)
-MULT(r8,r8,r8)
-STORE(r2,r8)
-SUB(r5,r2,r3)
-MULT(r6,r2,r3)
