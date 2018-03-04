@@ -5,9 +5,13 @@
  */
 package visao;
 
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ListSelectionModel;
@@ -26,6 +30,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private Arquitetura novaarquitetura = new Arquitetura();
     ModeloTabela mtMemoria;
     ModeloTabela mtInstrucoes;
+    public ArrayList<String> inputCode;
 
     /**
      * Creates new form NewJFrame
@@ -232,7 +237,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jTextFieldEntrada1.setText("CodigoEntrada.txt");
+        jTextFieldEntrada1.setText("CodigoSaida.txt");
+        jTextFieldEntrada1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldEntrada1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -341,17 +351,17 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "opcode", "reg1", "reg2", "modEnd1", "modEnd2"
+                "opcode", "reg1", "reg2"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true
+                false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -470,6 +480,85 @@ public class TelaPrincipal extends javax.swing.JFrame {
         setSize(new java.awt.Dimension(1353, 581));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+        //atualiza a tabela do programa
+    /*public void atualizarTabela(){
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        
+        int rows = 0;
+        for(int i=0; i<this.total_code;){
+            int mod1 = 0;
+            int mod2 = 0;
+            
+            String modEnd;
+            String modEnd2;
+            String load;
+            String reg1;
+            String reg2;
+            short opcode;
+            short internal_code;
+            opcode = Short.parseShort(memoria.load(i++), 2);
+          
+//            System.out.println("opcde: " + opcode);
+                    model.addRow(new Object[]{"NOP", "","","DIR"});
+            if (mv.pc == i) {
+                jTable1.setRowSelectionInterval(rows, rows);
+            }
+            rows++;
+            
+        
+        }
+        
+        model.addRow(new Object[]{"", "", "",""});
+//        System.out.println("Linha tab: " + linhaTabSel);
+//        jTable1.setRowSelectionInterval(linhaTabSel, linhaTabSel);
+//        linhaTabSel++;
+//        System.out.println(linhaTabSel);
+        
+    }*/
+    public void read(String arq) throws FileNotFoundException {
+
+        Scanner leitor = new Scanner(new FileReader(arq)).useDelimiter("\n");
+
+        while (leitor.hasNext()) {
+
+            this.inputCode.add(leitor.nextLine());
+
+        }
+
+    }
+
+    public void atualizarTabela(){
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        String strAux,opcode,reg1,reg2;
+        
+        int rows = 0;
+        for(int i=0; i < this.inputCode.size();i++){
+
+            strAux = this.inputCode.get(i);
+            if (strAux.equals("MCDEFN")) {
+                i++;
+                strAux = this.inputCode.get(i);
+                int j = 0;
+                while (true) {
+                    if (strAux.charAt(j) == '\n' || strAux.charAt(j) == ' ') {
+                        j++;
+                        break;
+                    }
+                    //this.mac[this.tamMacro].label += strAux.charAt(j);
+                    j++;
+                }
+                }
+            model.addRow(new Object[]{"NOP", "",""});
+            }
+        }
+    public void printInputCode() {
+        for (int i = 0; i < this.inputCode.size(); i++) {
+            System.out.println(this.inputCode.get(i));
+        }
+    }
+        
     public void atualizarRegistradores(){
         DefaultTableModel model = (DefaultTableModel) jRegistradoresTable.getModel();
         model.setRowCount(0);
@@ -517,9 +606,9 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void jButtonDealExpandActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDealExpandActionPerformed
 
         try {
-            macOp.writeArchive("CodigoSaida.txt");
             macOp.getMacro();
             macOp.expandMacro();
+            macOp.writeArchive("CodigoSaida.txt");
             jTextAreaOutput.setText(jTextAreaOutput.getText() + "Macros expandidas com sucesso!\n\n");
             // TODO add your handling code here:
         } catch (IOException ex) {
@@ -544,6 +633,10 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void jButtonDealExpand2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDealExpand2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonDealExpand2ActionPerformed
+
+    private void jTextFieldEntrada1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldEntrada1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldEntrada1ActionPerformed
 
     /**
      * @param args the command line arguments
